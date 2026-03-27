@@ -1,0 +1,14 @@
+package com.projectPFE.demo.repositories;
+
+import com.projectPFE.demo.entities.Metier;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+import java.util.List;
+
+@Repository
+public interface MetierRepository
+        extends JpaRepository<Metier, Long> {
+
+    List<Metier> findByFamilleMetier(String familleMetier);
+    List<Metier> findByNomContaining(String nom);
+}
