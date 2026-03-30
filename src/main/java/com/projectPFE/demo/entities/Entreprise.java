@@ -21,7 +21,7 @@ public class Entreprise {
             nullable = false, unique = true)
     private Utilisateur utilisateur;
 
-    @Column(name = "nom_entreprise", nullable = false)
+    @Column(name = "nom_entreprise")
     private String nomEntreprise;
 
     @Column(name = "secteur_activite")

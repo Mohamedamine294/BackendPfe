@@ -12,7 +12,9 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Utilisateur {
+public class Utilisateur
+        implements org.springframework.security
+        .core.userdetails.UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -40,21 +42,67 @@ public class Utilisateur {
     @Column(name = "est_actif")
     private Boolean estActif = true;
 
-    @OneToOne(mappedBy = "utilisateur", cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "utilisateur",
+            cascade = CascadeType.ALL)
     private EtudiantBaccalaureat etudiantBac;
 
-    @OneToOne(mappedBy = "utilisateur", cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "utilisateur",
+            cascade = CascadeType.ALL)
     private EtudiantLicence etudiantLicence;
 
-    @OneToOne(mappedBy = "utilisateur", cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "utilisateur",
+            cascade = CascadeType.ALL)
     private Entreprise entreprise;
 
-    @OneToOne(mappedBy = "utilisateur", cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "utilisateur",
+            cascade = CascadeType.ALL)
     private Administrateur administrateur;
 
-    @OneToMany(mappedBy = "utilisateur", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "utilisateur",
+            cascade = CascadeType.ALL)
     private List<ResultatTest> resultats;
 
-    @OneToMany(mappedBy = "utilisateur", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "utilisateur",
+            cascade = CascadeType.ALL)
     private List<ConversationIA> conversations;
+
+    @Override
+    public java.util.Collection<? extends
+            org.springframework.security.core
+                    .GrantedAuthority> getAuthorities() {
+        return List.of(new org.springframework
+                .security.core.authority
+                .SimpleGrantedAuthority(
+                role.name()));
+    }
+
+    @Override
+    public String getPassword() {
+        return motDePasse;
+    }
+
+    @Override
+    public String getUsername() {
+        return email;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return estActif;
+    }
 }
